@@ -23,3 +23,13 @@ Actual solution:</p>
 cargo was installed using apt with sudo and Rust version is 1.93.1, </p>
 this version is uniform accross all the components </p>
 checked, cargo , rustup is 1.28.2. <p>
+
+#### Managing dependencies:</p>
+Putting all material dependencies in one place, (Folder) for better referencing:</p>
+```
+     cargo new get-dependencies
+     cd get-dependencies
+     cargo add rand@0.8.5 trpl@0.2.0
+```
+
+One would get a detailed list of what has been added with details of version.
