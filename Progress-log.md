@@ -41,3 +41,7 @@ https://tokio.rs for reliable network applications
 
 #### Safety and speed:<p>
   Are achieved through impplementing at compile time instead of run time,</p> this is partially done by ensuring that abstraction is at a very low or no cost.</p>
+
+
+#### Using online compiler
+   https://play.rust-lang.org/?version=stable&mode=debug&edition=2015
