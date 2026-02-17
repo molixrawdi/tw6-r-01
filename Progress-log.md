@@ -33,3 +33,8 @@ Putting all material dependencies in one place, (Folder) for better referencing:
 ```
 
 One would get a detailed list of what has been added with details of version.
+
+2026/01/1 | 14:13 Async Programming
+Investigate futures : https://crates.io/crates/futures
+
+https://tokio.rs for reliable network applications
