@@ -45,3 +45,18 @@ https://tokio.rs for reliable network applications
 
 #### Using online compiler
    https://play.rust-lang.org/?version=stable&mode=debug&edition=2015
+
+#### Memory safety: </p>
+
+   How Rust Prevents Double Free
+   Ownership Rules: When a variable goes out of scope, its destructor runs, freeing the heap memory. If the variable      was moved (e.g., let b = a;), the original variable a cannot be used, so its destructor does not run twice.
+   No Implicit Copy: Types containing allocated memory (like Box<T>, Vec<T>) do not implement Copy, preventing       
+   accidental cloning of pointers that would lead to double free. 
+   Double Free in Unsafe Rust 
+   Unsafe Code: Manually creating pointers or using std::ptr::read() without properly managing the underlying memory      (e.g., with std::mem::forget()) can cause a Drop to occur on already freed memory, resulting in a runtime crash.
+   FFI/External Code: When interfacing with C, if Rust’s Drop is called on a pointer that the C code has already          free()'d, a double-free will occur. 
+   Detection and Prevention
+  
+  ##### Miri: 
+  Use the cargo miri tool to detect unsafe behavior and potential memory errors like double-frees during testing.
+  Proper Ownership: Avoid using unsafe blocks for memory management whenever possible, relying on Vec, Box, and smart    pointers. 
