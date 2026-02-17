@@ -15,3 +15,7 @@ Actual solution:
     sudo apt install --reinstall ca-certificates
     sudo update-ca-certificates
 '''
+
+2026/02/17| 13:39
+cargo was installed using apt with sudo and Rust version is 1.93.1, this version is uniform accross all the components
+checked, cargo , rustup is 1.28.2.
