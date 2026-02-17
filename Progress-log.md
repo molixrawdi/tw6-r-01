@@ -20,10 +20,17 @@ Actual solution:</p>
 ``` 
 
 2026/02/17| 13:39 </p>
-cargo was installed using apt with sudo and Rust version is 1.93.1, </p>
-this version is uniform accross all the components </p>
-checked, cargo , rustup is 1.28.2. <p>
+cargo was installed
+##### Note : Rustup usage: </p>
+   It would either be installed 1st or it would complain that Rust is installed, this behavour can be alterred</p>
+   
+   ```
+    rustup toolchain link system /usr
 
+   ```
+   The above extract show that system referres to the currently used version of Rust, one can use another word,</p>
+   to describe an installed version, this would be similar to env in Python. </p> 
+   One would be given options if trying to install whilst versions exist. </p>
 #### Managing dependencies:</p>
 Putting all material dependencies in one place, (Folder) for better referencing:</p>
 ```
