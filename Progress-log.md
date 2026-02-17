@@ -38,3 +38,6 @@ One would get a detailed list of what has been added with details of version.
 Investigate futures : https://crates.io/crates/futures
 
 https://tokio.rs for reliable network applications
+
+#### Safety and speed:<p>
+  Are achieved through impplementing at compile time instead of run time,</p> this is partially done by ensuring that abstraction is at a very low or no cost.</p>
