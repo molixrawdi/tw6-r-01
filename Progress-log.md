@@ -69,6 +69,42 @@ https://tokio.rs for reliable network applications
   Proper Ownership: Avoid using unsafe blocks for memory management whenever possible, relying on Vec, Box, and smart    pointers. 
 
 
+#### The std</p>
+
+        Standard library or crate, have many benefits one example can help in the activation of self build modules:</p>
+
+##### Exiting from a programme</p>
+```
+fn main(){
+   std::process::abort();
+}
+``` 
+
+##### Reading feed :</p>
+```
+use std::io;
+fn main() {
+   io::stdn()
+   .read_line(&mut guess).expect("The input has encountered an error");
+}
+```
+
+##### Comparison between two numbers:</p>
+```
+use std::io;
+use rand::Rng;
+fn main(){
+   let secret_number = rand::thread.rng().gen_range(1..=100);
+}
+}
+
+}
+```
+
+
+
+
+
 #### Traits examplified:</p>
 
 ```
