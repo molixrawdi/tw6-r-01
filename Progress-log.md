@@ -184,7 +184,18 @@ fn main() {
 Command line preferences, the usage of cargo check,(saving on the generation of binary file to ensure all</p> components are tested and passing.
 
 
+#### Mutable variables and the status of variables in general:</p>
+The variables are in general immutable, that tends to be the preferred status under Rust. </p> This however tends to be changeable by using mut and associating it with the variable declaration:</p>
 
+```
+
+fn main() {
+   let mut statementz = String::from("BlueGreen");
+   println!("the statement is {statementz}");
+   let mut statementz = String::from("BlueRed");
+   println!("The statement is {statementz}");
+
+```
 
 
 
