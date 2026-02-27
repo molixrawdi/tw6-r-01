@@ -179,3 +179,12 @@ fn main() {
 }
 
 ```
+##### Revision on Rust concepts and constructs: (2026/02/27)</p>
+
+Command line preferences, the usage of cargo check,(saving on the generation of binary file to ensure all</p> components are tested and passing.
+
+
+
+
+
+
