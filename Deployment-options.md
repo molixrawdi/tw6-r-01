@@ -11,3 +11,18 @@ The deployment medium is a very important part of the lifecycle for the applicat
 ​How it works: You provide a Dockerfile that starts with an Ubuntu base image (e.g., FROM ubuntu:24.04).
 ​Customization: You can apt-get install any dependencies you need.
 ​The Catch: While the container is Ubuntu, you still don't have control over the host kernel or the "machine" itself. You are limited to what can run inside a Docker container.
+
+
+### Rust Axum example</p>
+
+```
+// Example using Axum
+let addr = std::net::SocketAddr::from(([0, 0, 0, 0], 8080));
+println!("Listening on {}", addr);
+axum::Server::bind(&addr)
+    .serve(app.into_make_service())
+    .await
+    .unwrap();
+
+
+```
