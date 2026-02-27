@@ -197,5 +197,5 @@ fn main() {
 
 ```
 
-
+###### Note: Warnings will persist as one compiles and runs the package. </p>
 
