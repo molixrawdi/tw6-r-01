@@ -199,3 +199,12 @@ fn main() {
 
 ###### Note: Warnings will persist as one compiles and runs the package. </p>
 
+#### The type change
+   The type was suitable for a certain operations, redefining bounderies is what has taken place.
+
+```
+
+  
+    let guess: u32 = guess.trim().parse().expect("Please type a number!");
+
+``` 
