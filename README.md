@@ -1,6 +1,8 @@
 # tw6-r-01
 Monitor and record  and document progress, highlight any issues or challenges
 
+
+## cargo-generate:
 Both WebAssembly (Wasm) and Embedded Rust are fields where cargo-generate is almost a requirement because the "boilerplate" (the setup code) is too complex to write from scratch every time.
 Since you're starting with Wasm and moving to Embedded later, here is how you’ll use that tool you just installed:
 ### 1. WebAssembly Workflow
