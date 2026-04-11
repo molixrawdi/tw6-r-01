@@ -347,3 +347,34 @@ Since the Grow HAT uses I2C, your first step is to see if the Pi "sees" the HAT.
 i2cdetect -y 1
 If you see a number (like **42**) in that grid, your hardware is connected perfectly, and your Rust code is ready to start talking to it.
 **Does the i2cdetect command show the device at address 42?**
+
+####! Hardware can be a bit finicky,
+ so taking your time to get the I2C bus active is the right move.
+Once you’re back at your Pi 5, here is a quick "cheat sheet" of what to look for so you can move straight into the Rust code:
+### 1. The "Green Light" Check
+When you run i2cdetect -y 1, you are looking for this:
+```text
+     0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f
+00:                         -- -- -- -- -- -- -- -- 
+10: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+20: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+30: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+40: -- -- 42 -- -- -- -- -- -- -- -- -- -- -- -- -- 
+
+```
+ * **If you see 42:** You’re golden. The hardware is talking to the Pi 5.
+ * **If the grid is empty:** Double-check that the Mini HAT is pressed firmly onto the GPIO pins and that I2C is definitely enabled in raspi-config.
+### 2. Preparing your Rust "Workspace"
+While you're waiting, you can set up a clean project structure so you're ready to compile the second you see that 42:
+```bash
+cargo new grow_bot
+cd grow_bot
+# Add rppal for the I2C communication
+cargo add rppal
+
+```
+### 3. Calibration Hint
+When you do get to the moisture sensors, keep in mind that "moisture" values are relative.
+ * **Pro-tip:** Run your code with the sensor **sitting on your desk** (dry) and then **in a glass of water** (wet). Record those two numbers in your Rust code as MIN_MOISTURE and MAX_MOISTURE. This will make your "water the plant" logic much more accurate!
+
+to dive into the I2C registers or start mapping out the pump logic!
