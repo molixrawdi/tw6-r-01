@@ -232,4 +232,52 @@ Since you are using the Pi 5, you can make this app much more robust than a simp
  * **Safety:** You can write logic to ensure the pump *never* runs for more than 30 seconds at a time, even if the sensor fails, preventing a flood in your living room.
 ### Your First Step
 Before you buy the pump, try to get the **Relay** working. It’s the safest way to start because you're just clicking a mechanical switch.
-**Do you have any sensors or a relay module yet, or are you starting the hardware shopping list now?**
+
+
+Excellent! Having a kit ready to go means you can start writing Rust immediately. Most starter kits come with a variety of components—usually a breadboard, some LEDs, buttons, and (crucially for your project) **relays** and **sensors**.
+### 1. Identify your Sensor Type
+Check your kit for the moisture sensor.
+ * **If it has 3 pins (VCC, GND, DO):** The DO (Digital Output) pin is just a switch. It stays "High" until the soil is dry, then goes "Low." You can connect this directly to a Pi 5 GPIO pin using rppal.
+ * **If it has an AO (Analog Output) pin:** You’ll need that **ADC (Analog-to-Digital Converter)** chip I mentioned, or the kit might include a small module to handle it.
+### 2. The Relay "Click" Test
+The first milestone in any hardware project is the **"Hello World" of electricity**: making a relay click.
+**Wiring:**
+ 1. **VCC** to Pi 5V pin.
+ 2. **GND** to Pi Ground.
+ 3. **IN** (Signal) to Pi **GPIO 17**.
+**The Rust Code:**
+Since you have cargo-generate installed, you can create a clean project:
+```bash
+cargo new plant-waterer
+cd plant-waterer
+cargo add rppal
+
+```
+Replace your src/main.rs with this:
+```rust
+use rppal::gpio::Gpio;
+use std::thread;
+use std::time::Duration;
+
+fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let mut pin = Gpio::new()?.get(17)?.into_output();
+
+    loop {
+        println!("Relay ON - Pump should run");
+        pin.set_high(); 
+        thread::sleep(Duration::from_secs(2));
+
+        println!("Relay OFF - Pump should stop");
+        pin.set_low();
+        thread::sleep(Duration::from_secs(2));
+    }
+}
+
+```
+### 3. A Quick Warning for Pi 5 Users
+The Raspberry Pi 5 GPIO pins use **3.3V logic**.
+ * Most relays in kits are **5V relays**.
+ * Ensure your relay module is "Active Low" or has a level shifter. Usually, the ones in kits are fine, but if the relay doesn't "click" even when the code is running, it might not be getting enough "kick" from the 3.3V signal.
+### 4. Next Step: The Pump
+Once you hear that relay clicking, you are ready to wire the pump. Remember: **Don't power the pump from the Pi!** Use a battery pack or a separate power brick. The relay acts as the "middleman" that connects the battery to the pump.
+**Does your kit include a specific ADC chip (like an ADS1115 or MCP3008), or does the moisture sensor have a little dial (potentiometer) on it?**
