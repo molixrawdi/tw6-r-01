@@ -35,3 +35,42 @@ cargo generate --git https://github.com/rust-embedded/cortex-m-quickstart
 If you end up working with **ESP32** chips (very popular for hobbyists), they have their own specialized generator that is much more modern:
 cargo generate esp-rs/esp-idf-template (for standard apps) or esp-rs/esp-generate (for bare-metal).
 Which one are you diving into first—are you looking to build a web-based tool or start flashing some hardware?
+
+## Flashing hardware:
+
+Welcome to the "Bare Metal" world! Flashing hardware with Rust has become incredibly streamlined as of 2026. Since you're ready to start, here is your roadmap for getting code onto a physical chip.
+## 1. The "Must-Have" Tool: probe-rs
+In the past, you needed separate tools to compile, flash, and debug (like openocd or gdb). Now, the Rust community has standardized on **probe-rs**. It is a one-stop shop for flashing and getting logs back from your chip.
+**Install it now:**
+```bash
+cargo install probe-rs-tools --locked
+
+```
+ * **Why:** It allows you to run cargo run and have the code automatically flash to your hardware and open a terminal to show you println!-style logs from the chip.
+## 2. Choosing Your Hardware (2026 Favorites)
+If you don't have a board yet, these are the current top picks for Rust:
+| Hardware | Chip | Why it's great for Rust |
+|---|---|---|
+| **Raspberry Pi Pico 2** | **RP2350** | The "Gold Standard" for beginners. Massive community support and high-performance PIO pins. |
+| **ESP32-C6 / S3** | **ESP32** | Best for IoT. Rust support is native and excellent, especially for Wi-Fi and Bluetooth. |
+| **STM32 Nucleo** | **Cortex-M** | The industry standard. Very robust and reliable for professional "hard" real-time learning. |
+## 3. Your First "Blinky" Project
+Once your hardware arrives, you'll use cargo-generate to pull the specific template for that chip. For example, if you got a **Raspberry Pi Pico**:
+ 1. **Generate the project:**
+   ```bash
+   cargo generate --git https://github.com/rp-rs/rp2040-project-template
+   
+   ```
+ 2. **Connect your hardware** via USB.
+ 3. **Flash it:**
+   ```bash
+   cargo run
+   
+   ```
+## 4. Key Concepts You'll Encounter
+ * **no_std:** Most embedded Rust doesn't use the Standard Library (no std::collections, no std::fs) because there is no Operating System. You'll use the core crate instead.
+ * **PAC (Peripheral Access Crate):** The lowest level of code that knows exactly where the "buttons" and "lights" are on the chip.
+ * **HAL (Hardware Abstraction Layer):** A friendlier layer that lets you say led.set_high() instead of writing a hex value to a specific memory address.
+### A Note on "The Linker"
+The biggest hurdle for beginners is usually the **linker script** (memory.x). This file tells Rust, *"Hey, the Flash memory starts at address 0x08000000 and is 256KB big."* **The Good News:** Because you are using cargo-generate templates, this file is usually filled out for you!
+**Do you already have a piece of hardware on your desk, or are you looking to buy one today?**
