@@ -34,7 +34,7 @@ cargo generate --git https://github.com/rust-embedded/cortex-m-quickstart
 ### Quick Tip for 2026
 If you end up working with **ESP32** chips (very popular for hobbyists), they have their own specialized generator that is much more modern:
 cargo generate esp-rs/esp-idf-template (for standard apps) or esp-rs/esp-generate (for bare-metal).
-Which one are you diving into first—are you looking to build a web-based tool or start flashing some hardware?
+
 
 ## Flashing hardware:
 
@@ -73,7 +73,6 @@ Once your hardware arrives, you'll use cargo-generate to pull the specific templ
  * **HAL (Hardware Abstraction Layer):** A friendlier layer that lets you say led.set_high() instead of writing a hex value to a specific memory address.
 ### A Note on "The Linker"
 The biggest hurdle for beginners is usually the **linker script** (memory.x). This file tells Rust, *"Hey, the Flash memory starts at address 0x08000000 and is 256KB big."* **The Good News:** Because you are using cargo-generate templates, this file is usually filled out for you!
-**Do you already have a piece of hardware on your desk, or are you looking to buy one today?**
 
 ## Raspberry pi 5 Rust development
 
@@ -113,4 +112,4 @@ If your goal is to learn **Embedded Rust fundamentals** (registers, interrupts, 
 Buy a **Raspberry Pi Pico 2** (about $5). It’s designed specifically for the cargo-generate workflow we discussed and fits the "Bare Metal" learning path perfectly.
 If you want to use the **Pi 5** you already have:
 Stick to **Path A**. Write Rust apps that run on Linux but control hardware. It’s a fantastic way to learn the language without the frustration of debugging silicon-level boot sequences.
-**Which sounds more like what you were imagining: building a device that runs an app, or writing your own tiny operating system?**
+***
