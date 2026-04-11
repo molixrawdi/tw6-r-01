@@ -74,3 +74,43 @@ Once your hardware arrives, you'll use cargo-generate to pull the specific templ
 ### A Note on "The Linker"
 The biggest hurdle for beginners is usually the **linker script** (memory.x). This file tells Rust, *"Hey, the Flash memory starts at address 0x08000000 and is 256KB big."* **The Good News:** Because you are using cargo-generate templates, this file is usually filled out for you!
 **Do you already have a piece of hardware on your desk, or are you looking to buy one today?**
+
+## Raspberry pi 5 Rust development
+
+The **Raspberry Pi 5** is an absolute beast, but I have a quick "heads-up" for you as you dive into embedded development: it is significantly more complex than the microcontrollers I mentioned earlier (like the Pico or ESP32).
+### The Reality Check
+The Raspberry Pi 5 uses a **BCM2712 (quad-core ARM Cortex-A76)**.
+ * **Most "Embedded Rust" tutorials** focus on **Cortex-M** (microcontrollers).
+ * **The Raspberry Pi 5** is a **Cortex-A** (application processor).
+Because the Pi 5 is so new and complex (it has a specialized "Southbridge" chip called the RP1), doing "bare metal" (no OS) Rust on it is an advanced, "expert-level" project. You won't find a simple "Blinky" template for it as easily as you would for a Pico.
+### Your Two Paths Forward
+#### Path A: The "Embedded Linux" Way (Recommended for Beginners)
+You keep the Raspberry Pi OS (Linux) running, but you write Rust code that talks directly to the hardware pins (GPIO). This is still "embedded," but you have the safety of an Operating System.
+ 1. **Install the library:** Use the rppal crate (Raspberry Pi Peripheral Access Library).
+ 2. **The Code:**
+   ```rust
+   use rppal::gpio::Gpio;
+   use std::thread;
+   use std::time::Duration;
+   
+   fn main() {
+       let mut pin = Gpio::new().unwrap().get(18).unwrap().into_output();
+       loop {
+           pin.toggle();
+           thread::sleep(Duration::from_millis(500));
+       }
+   }
+   
+   ```
+ 3. **Why this is great:** you get to use the full Rust standard library, networking, and file systems while still flipping hardware switches.
+#### Path B: The "Bare Metal" Way (The Hard Way)
+If you truly want to wipe the SD card and have your Rust code be the **only** thing running on the Pi 5:
+ 1. **The Tutorial:** Look up the **"Operating System development tutorials in Rust on the Raspberry Pi"** by *rust-embedded*. Note that these are mostly updated for the Pi 3 and 4; the Pi 5's new architecture makes it a bit of a "frontier" right now.
+ 2. **The Tooling:** You will need a **USB-to-Serial (UART) cable** to see any output, because you won't have a HDMI driver or a screen for a long time.
+ 3. **The Difficulty:** You have to manually handle things like the MMU (Memory Management Unit) and multi-core startup.
+### My Recommendation
+If your goal is to learn **Embedded Rust fundamentals** (registers, interrupts, memory maps):
+Buy a **Raspberry Pi Pico 2** (about $5). It’s designed specifically for the cargo-generate workflow we discussed and fits the "Bare Metal" learning path perfectly.
+If you want to use the **Pi 5** you already have:
+Stick to **Path A**. Write Rust apps that run on Linux but control hardware. It’s a fantastic way to learn the language without the frustration of debugging silicon-level boot sequences.
+**Which sounds more like what you were imagining: building a device that runs an app, or writing your own tiny operating system?**
