@@ -280,4 +280,70 @@ The Raspberry Pi 5 GPIO pins use **3.3V logic**.
  * Ensure your relay module is "Active Low" or has a level shifter. Usually, the ones in kits are fine, but if the relay doesn't "click" even when the code is running, it might not be getting enough "kick" from the 3.3V signal.
 ### 4. Next Step: The Pump
 Once you hear that relay clicking, you are ready to wire the pump. Remember: **Don't power the pump from the Pi!** Use a battery pack or a separate power brick. The relay acts as the "middleman" that connects the battery to the pump.
-**Does your kit include a specific ADC chip (like an ADS1115 or MCP3008), or does the moisture sensor have a little dial (potentiometer) on it?**
+
+## The Grow kit
+
+That is a fantastic piece of hardware! The **Pimoroni Grow Mini HAT** is specifically designed for this. It simplifies things significantly because it handles the "analog" problem for you.
+The Grow HAT uses a tiny microcontroller (usually an **Attiny**) that talks to the Raspberry Pi over **I2C**. This means you don't have to worry about ADCs or raw GPIO pins for the moisture sensors; you just ask the HAT for the data over the I2C bus.
+### 1. Enabling I2C on your Pi 5
+Before Rust can talk to the HAT, the Pi's I2C interface must be on.
+ 1. Run sudo raspi-config.
+ 2. Go to **Interface Options** -> **I2C** and select **Yes**.
+ 3. Reboot your Pi.
+### 2. The Rust Setup
+To talk to this HAT, you’ll need a crate that handles I2C communication. While rppal can do this, the Grow HAT has a specific communication protocol.
+Add these to your Cargo.toml:
+```bash
+cargo add rppal
+
+```
+### 3. How to "Talk" to the Grow HAT
+The Grow sensors are **capacitive**, which is great (they won't rust!). The HAT exposes the moisture levels as values you can read over I2C.
+Here is a simplified way to structure your Rust code to read from the Grow HAT:
+```rust
+use rppal::i2c::I2c;
+use std::thread;
+use std::time::Duration;
+
+// The default I2C address for the Grow HAT is usually 0x42
+const GROW_ADDR: u16 = 0x42;
+
+fn main() -> Result<(), Box<dyn std::error::Error>> {
+    // Initialize I2C on the Pi 5
+    let mut i2c = I2c::new()?;
+    i2c.set_slave_address(GROW_ADDR)?;
+
+    println!("Grow HAT initialized. Monitoring sensors...");
+
+    loop {
+        // The Grow HAT has specific registers for the 3 moisture sensors
+        // We'll read from Channel 1 (Register 0x00 for example)
+        let mut reg_data = [0u8; 2]; 
+        i2c.write_read(&[0x00], &mut reg_data)?;
+        
+        // Convert the two bytes into a single value
+        let moisture = u16::from_le_bytes(reg_data);
+
+        println!("Sensor 1 Level: {}", moisture);
+
+        // Logic for your pump (the HAT also has headers to trigger pumps!)
+        if moisture < 500 { // You'll need to calibrate this "dry" value
+            println!("Plant is thirsty!");
+            // Command the HAT to turn on the onboard pump header
+            // i2c.write(&[PUMP_1_REG, 1])?; 
+        }
+
+        thread::sleep(Duration::from_secs(2));
+    }
+}
+
+```
+### 4. Important Tip for the Grow HAT
+Pimoroni usually provides a Python library for this. Since you are using **Rust**, you are essentially "porting" that logic.
+ * **The Sensors:** The sensors use "Pulse Frequency" to measure moisture.
+ * **The Pumps:** The Grow HAT has three onboard "pumping" headers. You can drive 5V pumps directly from the HAT, which is much cleaner than using a separate relay!
+### Your First Task
+Since the Grow HAT uses I2C, your first step is to see if the Pi "sees" the HAT. Run this in your terminal:
+i2cdetect -y 1
+If you see a number (like **42**) in that grid, your hardware is connected perfectly, and your Rust code is ready to start talking to it.
+**Does the i2cdetect command show the device at address 42?**
