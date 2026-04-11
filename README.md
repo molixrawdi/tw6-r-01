@@ -166,4 +166,70 @@ Since you have a Pi 5, your "app" can do things a tiny microcontroller can't:
  * **Web Dashboard:** Use the axum or rocket crates to create a web page that lets you toggle pins from your phone.
  * **Computer Vision:** Use opencv crates to trigger hardware actions when the camera sees something.
  * **Database:** Use sqlite to log sensor data over months.
-**What kind of "app" are you thinking of first?** (e.g., A weather station, a robot controller, an automated plant waterer, etc.)
+
+A **Rust-powered automated plant waterer** is a top-tier starter project. It involves "Reading" (sensors), "Deciding" (logic), and "Acting" (pumps).
+Since you are using a Raspberry Pi 5, you have enough horsepower to not just water the plant, but also log data to a database or host a local website to show your plant's "vitals."
+### 1. The Hardware Shopping List
+To turn your Pi 5 into a gardener, you'll typically need:
+ * **Capacitive Soil Moisture Sensor:** (Avoid the cheap resistive ones; they corrode in weeks).
+   * *Note:* These sensors output an **Analog** signal. The Pi 5 does not have built-in Analog-to-Digital Converters (ADC). You will likely need an **ADS1115** chip to let the Pi "read" the moisture level.
+ * **5V or 12V Peristaltic Pump:** These move water through a tube.
+ * **Relay Module (5V):** The Pi pins can't power a pump directly; the relay acts as a switch that the Pi flips to turn the pump's power on/off.
+ * **External Power Supply:** One for the Pi, and a separate one (like an 8xAA battery pack or a wall adapter) for the pump.
+### 2. How the Rust Code Looks
+Here is a conceptual breakdown of your main.rs. You’ll use rppal for the relay and likely a crate like ads1x1x for the moisture sensor.
+```rust
+use rppal::gpio::Gpio;
+use std::thread;
+use std::time::Duration;
+
+// Constants for your plant's needs
+const MOISTURE_THRESHOLD: f32 = 30.0; // Percent
+const WATERING_TIME: Duration = Duration::from_secs(5);
+
+fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let gpio = Gpio::new()?;
+    
+    // Relay connected to GPIO 17
+    let mut pump_relay = gpio.get(17)?.into_output();
+    
+    println!("Plant Monitor Active...");
+
+    loop {
+        // 1. Read moisture (Assuming you have an ADC set up)
+        let moisture = read_moisture_level(); 
+
+        println!("Current Moisture: {}%", moisture);
+
+        // 2. Decision Logic
+        if moisture < MOISTURE_THRESHOLD {
+            println!("Soil dry! Starting pump...");
+            pump_relay.set_high();
+            thread::sleep(WATERING_TIME);
+            pump_relay.set_low();
+            println!("Watering finished. Waiting for soak-in.");
+            
+            // Wait 30 mins for water to spread before checking again
+            thread::sleep(Duration::from_secs(1800)); 
+        }
+
+        // 3. Wait before next check
+        thread::sleep(Duration::from_secs(60));
+    }
+}
+
+fn read_moisture_level() -> f32 {
+    // This is where you'd talk to your ADS1115 via I2C
+    // For now, we'll pretend it's 45%
+    45.0
+}
+
+```
+### 3. Making it "Professional" with Rust
+Since you are using the Pi 5, you can make this app much more robust than a simple script:
+ * **Error Handling:** Use Rust’s Result to send yourself a notification (via a Telegram bot or Email) if the sensor stops responding.
+ * **Async/Await:** Use the tokio crate so your app can monitor the plant and run a web server simultaneously without stopping the watering logic.
+ * **Safety:** You can write logic to ensure the pump *never* runs for more than 30 seconds at a time, even if the sensor fails, preventing a flood in your living room.
+### Your First Step
+Before you buy the pump, try to get the **Relay** working. It’s the safest way to start because you're just clicking a mechanical switch.
+**Do you have any sensors or a relay module yet, or are you starting the hardware shopping list now?**
