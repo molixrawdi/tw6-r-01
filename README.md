@@ -70,7 +70,7 @@ s.push_str(" is fun!"); // This works
 
 ```
 #### B. Creating a Mutable Reference
-If you specifically wanted s to be a **pointer** (reference) to a string elsewhere, you’d do it like this:
+If you specifically wanted s to be a **pointer** (reference) to a string elsewhere, you’d do it like this: (most direct fix)
 ```rust
 let original = String::from("Rust Test Mut");
 let s = &mut original; // s is now a &mut String
