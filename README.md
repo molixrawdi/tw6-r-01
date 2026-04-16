@@ -1,6 +1,6 @@
 # tw6-r-01
-the aim of this repository is research 
-Monitor, record  and document progress, highlight any issues or challenges
+The aim of this repository is research 
+Monitor,record and document progress, highlight any issues or challenges
 
 
 ## Borrow checker:
