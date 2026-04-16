@@ -104,6 +104,20 @@ fn second_string(){
 
 ```
 
+### Fix similar issues:<p>
+
+```
+
+fn second_string(){
+
+  let original = String::from("Rust Origin");
+  let copyone = original.clone();
+  println!("Origin is {original}, copyone is {copyone}");
+  
+}
+```
+
+
 
 ## cargo-generate:
 Both WebAssembly (Wasm) and Embedded Rust are fields where cargo-generate is almost a requirement because the "boilerplate" (the setup code) is too complex to write from scratch every time.
