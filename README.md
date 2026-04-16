@@ -84,7 +84,25 @@ let s = &mut original; // s is now a &mut String
 | let &mut s | **(The Failure)** "Unpack this reference for me." | *Compiler Error* |
 ### A Quick Tip on "Ref"
 If you ever see older Rust code or complex patterns, you might see let ref mut s = .... This was the old-school way to achieve what let s = &mut ... does now. In modern Rust (thanks to "match ergonomics"), you rarely need to use ref or put &mut on the left side of an assignment like that.
-Are you trying to pass this string into a function that requires a mutable reference, or just looking to modify the string in place?
+
+## No more than one variable can own the same value:</p>
+
+```
+fn second_string(){
+
+
+
+  let mut original = String::from("Rust Origin");
+
+  let copyone = original; // creates ownership problem thus use copy.
+
+  println!("Origin is {original}, copyone is {copyone}");
+
+
+
+}
+
+```
 
 
 ## cargo-generate:
