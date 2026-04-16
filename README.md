@@ -2,6 +2,48 @@
 Monitor and record  and document progress, highlight any issues or challenges
 
 
+## Borrow checker:
+
+
+In Rust, the mut keyword is used twice in io::stdin().read_line(&mut guess); to manage how your program modifies the guess variable and how it shares that permission with the read_line function. [1, 2, 3] 
+## The Two Uses of mut
+
+* Variable Declaration (let mut guess): This allows the variable guess itself to be changed after its initial creation. Without this, guess would be immutable by default.
+* The Reference (&mut guess): This creates a mutable reference to the variable. It acts like a "portal" that gives the read_line function direct, exclusive permission to modify the original string stored in your variable instead of making a copy. [2, 4, 5, 6, 7] 
+
+## Why read_line works this way
+
+* Efficiency: Instead of creating and returning a brand-new string every time you read a line, read_line appends data to the existing buffer you provide. This minimizes memory allocations, which is much faster when processing large amounts of data.
+* Explicit Control: Rust requires you to be explicit about mutability. By requiring &mut, the compiler ensures you know exactly which functions have the power to change your data, preventing accidental bugs.
+* Ownership: Passing a reference (&) allows you to retain ownership of the guess variable so you can still use it (e.g., to print it or convert it to a number) after the function call finishes. [7, 8, 9, 10, 11, 12, 13, 14] 
+
+## Summary of Differences
+
+| Syntax [5, 14, 15] | What it means |
+|---|---|
+| let guess | You cannot change this variable later. |
+| let mut guess | You can change this variable. |
+| &guess | A read-only reference (borrow) that others cannot change. |
+| &mut guess | A mutable reference (borrow) that allows others to change it. |
+
+Are you seeing a specific compiler error related to this, or are you just curious about the syntax?
+
+[1] [https://doc.rust-lang.org](https://doc.rust-lang.org/std/io/struct.Stdin.html)
+[2] [https://doc.rust-lang.org](https://doc.rust-lang.org/book/ch02-00-guessing-game-tutorial.html)
+[3] [https://users.rust-lang.org](https://users.rust-lang.org/t/why-should-i-add-mut-in-read-line-but-not-in-match/116238)
+[4] [https://users.rust-lang.org](https://users.rust-lang.org/t/why-does-std-stdin-read-line-expect-a-mut-string/11652)
+[5] [https://www.reddit.com](https://www.reddit.com/r/learnrust/comments/ibi3x4/question_about_readline_method_in_guessing_game/)
+[6] [https://users.rust-lang.org](https://users.rust-lang.org/t/why-does-std-stdin-read-line-expect-a-mut-string/11652/17)
+[7] [https://doc.rust-lang.org](https://doc.rust-lang.org/book/ch02-00-guessing-game-tutorial.html)
+[8] [https://users.rust-lang.org](https://users.rust-lang.org/t/why-do-functions-like-read-line-need-to-use-a-mutable-output-variable/3423#:~:text=It%20allows%20one%20to%20reuse%20a%20String,%28assuming%20a%20reasonable%20distribution%20of%20line%20lengths%29.)
+[9] [https://stackoverflow.com](https://stackoverflow.com/questions/63627687/why-does-rusts-read-line-function-use-a-mutable-reference-instead-of-a-return-v)
+[10] [https://stackoverflow.com](https://stackoverflow.com/questions/63627687/why-does-rusts-read-line-function-use-a-mutable-reference-instead-of-a-return-v)
+[11] [https://stackoverflow.com](https://stackoverflow.com/questions/63627687/why-does-rusts-read-line-function-use-a-mutable-reference-instead-of-a-return-v)
+[12] [https://users.rust-lang.org](https://users.rust-lang.org/t/why-does-std-stdin-read-line-expect-a-mut-string/11652/5)
+[13] [https://doc.rust-lang.org](https://doc.rust-lang.org/book/ch04-02-references-and-borrowing.html)
+[14] [https://stackoverflow.com](https://stackoverflow.com/questions/60445787/usage-of-mut-keyword-in-rust)
+[15] [https://www.reddit.com](https://www.reddit.com/r/rust/comments/1hvu992/why_a_mutable_reference_needs_to_be_preceded_with/)
+
 ## cargo-generate:
 Both WebAssembly (Wasm) and Embedded Rust are fields where cargo-generate is almost a requirement because the "boilerplate" (the setup code) is too complex to write from scratch every time.
 Since you're starting with Wasm and moving to Embedded later, here is how you’ll use that tool you just installed:
