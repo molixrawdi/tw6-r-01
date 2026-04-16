@@ -129,6 +129,26 @@ fn third_string(){
 
 ```
 
+### A fourth example:</p>
+
+The short answer is **yes, the code will compile**, but there is a catch regarding what happens to s1 afterward.
+In Rust, this is a classic example of **Ownership and Moving**. Here is the breakdown of what is happening under the hood:
+### 1. The "Move" Operation
+When you assign s1 to s2, Rust does not copy the string data. Instead, it moves the **ownership** of the data from s1 to s2.
+ * **Before the assignment:** s1 owns the memory on the heap containing "Rust one".
+ * **After the assignment:** s2 now owns that memory. s1 is considered **invalid** or "uninitialized."
+### 2. Why does this happen?
+Rust does this to ensure **memory safety**. If both s1 and s2 pointed to the same heap memory, Rust would try to free that memory twice when they go out of scope (a "double free" error). By moving ownership, Rust ensures only one variable is responsible for cleaning up the data.
+### Comparison: What works vs. what doesn't
+| Code Snippet | Will it work? | Why? |
+|---|---|---|
+| let s2 = s1; | **Yes** | Ownership is moved to s2. |
+| println!("{}", s1); (after move) | **No** | You cannot use s1 after its value has been moved. |
+| let s2 = s1.clone(); | **Yes** | This creates a deep copy; both s1 and s2 remain valid. |
+### Summary
+If your goal was simply to transfer the data to a new variable, your code works perfectly! Just remember that if you try to use s1 in the lines following that assignment, the compiler will step in with a friendly (but firm) error message telling you that you're trying to use a moved value.
+
+
 ## cargo-generate:
 Both WebAssembly (Wasm) and Embedded Rust are fields where cargo-generate is almost a requirement because the "boilerplate" (the setup code) is too complex to write from scratch every time.
 Since you're starting with Wasm and moving to Embedded later, here is how you’ll use that tool you just installed:
