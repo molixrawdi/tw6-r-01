@@ -117,7 +117,17 @@ fn second_string(){
 }
 ```
 
+## Third example :</p>
 
+```
+
+fn third_string(){
+   let mut originator = String::from("Rust I node");
+   let copy_origin = &mut originator;
+   println!("{copy_origin
+}
+
+```
 
 ## cargo-generate:
 Both WebAssembly (Wasm) and Embedded Rust are fields where cargo-generate is almost a requirement because the "boilerplate" (the setup code) is too complex to write from scratch every time.
