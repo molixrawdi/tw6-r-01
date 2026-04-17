@@ -2,6 +2,11 @@
 The aim of this repository is research 
 Monitor,record and document progress, highlight any issues or challenges
 
+Use this command to install Rust: (Check output since some dependencies might be missing. </p>
+```
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+```
+
 
 ## Borrow checker:
 
