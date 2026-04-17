@@ -12,6 +12,22 @@ source "$HOME/.cargo/env"
 ```
 This ensures the path environment variable knows where the Rust setup resides.
 
+During cargo handling of the project there are a number of commands that are focused on certain steps, </p>
+```
+cargo build --release
+```
+
+The command above is aimed at optimising the code being ideally release to production.</p>
+```
+cargo test
+```
+This one would run any pre committed tests that have been desinged to be run as part of the system.</p>
+```
+cargo add
+
+```
+Adding certain extra tools it would also add dependencies
+
 ## Borrow checker:
 
 
