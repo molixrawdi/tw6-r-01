@@ -26,7 +26,7 @@ This one would run any pre committed tests that have been desinged to be run as 
 cargo add
 
 ```
-Adding certain extra tools it would also add dependencies
+Adding certain extra tools it would also add dependencies. It would modify 'Cargo.toml'</p>
 
 ## Borrow checker:
 
