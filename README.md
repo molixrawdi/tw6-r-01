@@ -6,7 +6,11 @@ Use this command to install Rust: (Check output since some dependencies might be
 ```
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 ```
-
+After installing the environment one needs to do the following to activate :</p>
+```
+source "$HOME/.cargo/env"
+```
+This ensures the path environment variable knows where the Rust setup resides.
 
 ## Borrow checker:
 
