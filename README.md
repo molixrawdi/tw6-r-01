@@ -40,7 +40,18 @@ rustup component add rustfmt
 cargo fmt
 ```
 Here is away above of adding fm.</p>
+clippy is another tool that would be a good analyser. potential bugs and style issues.</p>
 
+Here is a way of configuring the tools in a more elegant and structured way:</p>
+
+File:rust-toolchain.toml:
+```
+#rust-toolchain.tom
+[toolchain]
+channel = "stable"
+version = "1.94.0"
+components = ["rustfmt", "clippy"]
+```
 
 
 ## Borrow checker:
