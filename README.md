@@ -250,6 +250,50 @@ This prevents **Data Races**. By ensuring only one variable (s2) has the power t
  * **Modification:** s2 **can** modify s, but s becomes temporarily inaccessible until s2 is done with its work.
 
 
+## To unlock and access the value of the original variable. </p>
+
+
+To see how the "lock" is released, we need to look at **Scopes** and **Non-Lexical Lifetimes (NLL)**. In modern Rust, a borrow ends the very last time the reference is used. Once s2 is no longer needed, the "lock" on s vanishes, and you can use s again.
+Here is the code flow visualized:
+```rust
+fn main() {
+    let mut s = String::from("this Rust"); // [s] is Unlocked
+    let s2 = &mut s; // --- Borrow starts here ---
+                     // [s] is now LOCKED
+    
+    s2.push_str(" is fast"); // s2 is used here
+    
+    // After this line, s2 is never used again.
+    // The Borrow Checker "drops" the borrow.
+    
+    println!("{}", s); // ✅ WORKS! [s] is UNLOCKED
+}
+```
+### The "Lock/Unlock" Lifecycle
+Think of it as a baton in a relay race. While s2 has the baton (the mutable reference), s has to stand still and watch.
+
+| Line of Code | State of s | State of s2 |
+| :--- | :--- | :--- |
+| let mut s = ... | **Active** (Owner) | N/A |
+| let s2 = &mut s | **Locked** (Borrowed) | **Active** (Mutable Ref) |
+| s2.push_str(...) | **Locked** | **Active** |
+| println!("{}", s) | **Active** (Unlocked!) | *Expired* |
+
+### A Common "Trap" (Re-locking)
+If you try to use s **between** uses of s2, the compiler will step in like a referee.
+```rust
+let mut s = String::from("this Rust");
+let s2 = &mut s;
+println!("{}", s);   // ❌ ERROR: "cannot borrow `s` as immutable because 
+                     // it is also borrowed as mutable"
+s2.push_str("...");  // Because s2 is used HERE, the borrow was still 
+                     // active in the line above.
+```
+### Why does this matter?
+Imagine if s2 was in the middle of resizing the String on the heap. During that tiny window of time, the memory address of the text might change. If println!("{}", s) tried to read it at that exact moment, it could point to a memory location that no longer exists (a "Dangling Pointer").
+By "locking" s, Rust makes it **physically impossible** to crash your program this way.
+
+seeing how the borrow "expires" help clarify why you can't use both variables at the same time.
 
 ## Slices:</p>
 
