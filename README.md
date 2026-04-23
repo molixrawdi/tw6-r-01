@@ -334,7 +334,8 @@ Does that help clarify that a mutable borrow is a direct "edit-in-place" rather 
 
 
 Here is a diagram illustrating the concept of a slice in Rust, referencing a contiguous sequence of elements.
-### Diagram: Rust Slice Reference
+### Diagram: Rust Slice Reference</p>
+
 ```mermaid
 graph TD
     subgraph "Stack"
