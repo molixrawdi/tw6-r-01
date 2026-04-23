@@ -295,6 +295,41 @@ By "locking" s, Rust makes it **physically impossible** to crash your program th
 
 seeing how the borrow "expires" help clarify why you can't use both variables at the same time.
 
+
+### what will the unlocked is return:</p>
+
+
+It will return **whatever changes were added by s2.**
+Since s2 was a **reference** (a pointer) to the memory owned by s, they were both looking at the exact same spot on the heap. When s2 modified the data, it changed the actual "source of truth."
+### The "Hotel Room" Analogy
+Think of the memory on the heap as a **Hotel Room**:
+ 1. **s** is the owner of the room.
+ 2. **s2** is a guest who was given a **temporary key** (&mut).
+ 3. While the guest (s2) has the key, the owner (s) isn't allowed to enter.
+ 4. The guest repaints the walls from white to **blue**.
+ 5. The guest leaves and hands the key back (the borrow ends).
+ 6. When the owner (s) walks back in, the walls are **blue**.
+### Code Proof
+If we run the following code:
+```rust
+let mut s = String::from("this Rust");
+{
+    let s2 = &mut s;
+    s2.push_str(" is now changed!"); 
+    // s2 is used here for the last time
+} 
+
+println!("{}", s); 
+
+```
+**The Output will be:**
+this Rust is now changed!
+### Why this is efficient
+Rust does this so it **doesn't have to copy data**.
+ * If s went back to its "original" value, Rust would have had to save a backup of the string somewhere else before letting s2 touch it.
+ * Instead, Rust just lets s2 work directly on the memory. Once the "lock" (borrow) is over, s just looks at its heap pointer and sees the new data.
+Does that help clarify that a mutable borrow is a direct "edit-in-place" rather than a temporary experiment?
+
 ## Slices:</p>
 
 
