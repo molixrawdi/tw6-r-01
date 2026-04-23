@@ -394,8 +394,7 @@ Here is a diagram illustrating the concept of a slice in Rust, referencing a con
 ### Diagram: Rust Slice Reference</p>
 
 ```mermaid
-
-     graph TD;
+graph TD;
     subgraph "Stack"
         subgraph "Slice Reference (&[T])"
             Pointer[ptr: &*mut T]
