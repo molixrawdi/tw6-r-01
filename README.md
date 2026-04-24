@@ -387,6 +387,31 @@ Think of it like a **contract**: once you go back to the owner, the temporary co
 Does that make sense, or does the "shredded contract" idea sound like it would make your code too messy?
 
 
+## Using the '#':</p>
+
+In Rust, the # in r# is used to create a **Raw Identifier**.
+Its primary purpose is to allow you to use **reserved keywords** (like match, if, let, or gen) as names for variables, functions, or modules.
+### Why is it used here?
+In your specific example, gen_range isn't actually a reserved keyword in standard Rust. However, it is very likely that:
+ 1. **Macro Ambiguity:** The code might be interacting with a macro or a specific crate where gen could be interpreted as a keyword or part of a DSL (Domain Specific Language).
+ 2. **Future-Proofing:** The author might be using it to ensure that if gen ever becomes a reserved keyword in a future Rust edition (like how async and await were added), the code won't break.
+ 3. **The "r" Prefix:** Note that it is specifically r#. This tells the compiler: *"Treat the following string literally as an identifier, even if it looks like a keyword."*
+### Common Use Cases
+You’ll most often see this when interfacing with C libraries or older codebases where a variable name might clash with modern Rust syntax.
+
+| Code Example | Reason |
+| :--- | :--- |
+| let r#match = 10; | match is a reserved keyword for pattern matching. |
+| r#type: String | type is reserved for defining type aliases. |
+| fn r#extern() {} | extern is reserved for the Foreign Function Interface (FFI). |
+
+### Summary
+In the statement rng.r#gen_range(0..10), the r# explicitly instructs the Rust compiler to treat gen_range as a standard function name, bypassing any special meaning the compiler might otherwise attribute to that word.
+> **Note:** If gen_range is just a normal method from the rand crate, the r# is actually unnecessary and can be removed for cleaner code—unless you are working in a specific environment where gen is reserved.
+>
+
+
+
 ## Slices:</p>
 
 In Rust, a **contiguous sequence of elements** means that all items in a collection are stored in memory directly next to each other, without any gaps or "padding" between them.
