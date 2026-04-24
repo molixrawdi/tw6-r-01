@@ -389,6 +389,34 @@ Does that make sense, or does the "shredded contract" idea sound like it would m
 
 ## Slices:</p>
 
+In Rust, a **contiguous sequence of elements** means that all items in a collection are stored in memory directly next to each other, without any gaps or "padding" between them.
+Think of it like a row of houses on a single street: to get from house #1 to house #2, you only have to move a fixed distance.
+## Why it Matters
+When memory is contiguous, the CPU can predict what data it needs next. This leads to **cache locality**, which makes your code significantly faster because the processor doesn't have to "jump" around to different parts of your RAM.
+### 1. The Core Examples
+In Rust, the following types are guaranteed to be contiguous:
+ * **Arrays [T; N]**: Fixed-size, stored on the stack.
+ * **Vectors Vec<T>**: Growable, stored on the heap.
+ * **Slices &[T]**: A view into a contiguous block.
+### 2. Pointer Arithmetic
+Because the elements are back-to-back, Rust can calculate the memory address of any element using a simple formula:
+If you have a Vec<u32> (where each u32 is 4 bytes) starting at memory address **1000**:
+ * Index 0 is at **1000**
+ * Index 1 is at **1004**
+ * Index 2 is at **1008**
+## Contiguous vs. Non-Contiguous
+To visualize the difference, compare a Vec to a LinkedList:
+
+| Feature | Vec<T> (Contiguous) | LinkedList<T> (Non-Contiguous) |
+| :--- | :--- | :--- |
+| **Memory Layout** | One solid block of memory. | Scattered nodes connected by pointers. |
+| **Access Speed** | **O(1)** - Instant access to any index. | **O(n)** - Must walk through every node. |
+| **Cache Performance** | Excellent. | Poor (lots of "cache misses"). |
+
+## A Small Nuance: Zero-Sized Types (ZSTs)
+If you create a sequence of types that take up zero bytes (like ()), Rust handles this uniquely. Since the size of the element is 0, a "contiguous sequence" of 1,000,000 units effectively takes up no space, and they all technically point to the same memory address!
+> **Note:** While the elements themselves are contiguous, the *order* is strictly defined by their index. You can always trust that index and index + 1 are physical neighbors in your hardware's memory.
+>
 
 Here is a diagram illustrating the concept of a slice in Rust, referencing a contiguous sequence of elements.
 ### Diagram: Rust Slice Reference</p>
