@@ -589,6 +589,13 @@ for (i, &item) in bytes.iter().enumerate()
 ​This allows item to be a simple u8 rather than a &u8, making it easier to compare against the byte literal b' '.
 ​Summary of the Flow
 
+
+Step Action Data Example
+Collection bytes [72, 105] (for "Hi")
+Iterator .iter() &72, then &105
+Wrapped .enumerate() (0, &72), then (1, &105)
+Destructured (i, &item) i=0, item=72, then i=1, item=105
+
 ## cargo-generate:
 Both WebAssembly (Wasm) and Embedded Rust are fields where cargo-generate is almost a requirement because the "boilerplate" (the setup code) is too complex to write from scratch every time.
 Since you're starting with Wasm and moving to Embedded later, here is how you’ll use that tool you just installed:
