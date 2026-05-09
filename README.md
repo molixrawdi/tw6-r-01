@@ -554,6 +554,19 @@ I'll help guide you through how these pieces work with a few questions along the
  3. **The "Macro" Difference 💡**: Why Rust uses an exclamation mark ! for assert_eq! instead of making it a normal function.
 
 
+## 
+```
+fn first_word(s: &String) -> &str {
+    let bytes = s.as_bytes();
+
+    for (i, &item) in bytes.iter().enumerate() {
+        if item == b' ' {
+            return &s[0..i];
+        }
+    }
+
+    &s[..]
+```
 ## cargo-generate:
 Both WebAssembly (Wasm) and Embedded Rust are fields where cargo-generate is almost a requirement because the "boilerplate" (the setup code) is too complex to write from scratch every time.
 Since you're starting with Wasm and moving to Embedded later, here is how you’ll use that tool you just installed:
