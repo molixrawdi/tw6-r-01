@@ -34,6 +34,13 @@ Adding certain extra tools it would also add dependencies. It would modify 'Carg
 cargo new my_lib01 --lib
 
 ```
+
+If to names are same thus conflict once tryi g to use, one ca use as, like below
+```
+use std::fmt::Result;
+use std::io::Result as IoResult;
+```
+
 ## Editor:
 I tend to use vs code to edit, there is an adjusted one for Android but that has an issues with fonts, one can run 
 user land linux app and have it run on visual mode , the android device need to be equiped with a lot of ram. more that 12GB. If the traditional path of win/Lin/Mac then all is as normal.
