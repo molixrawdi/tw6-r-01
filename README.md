@@ -28,6 +28,12 @@ cargo add
 ```
 Adding certain extra tools it would also add dependencies. It would modify 'Cargo.toml'</p>
 
+## Structures
+ Its of vital importance to bring structure to the repository, earlier than later. To avoid major disruption. In that vidw its recommended to split libs ,(ones with no main.rs) from binaries. Commanx below shows how to create libz.
+```
+cargo new my_lib01 --lib
+
+```
 ## Editor:
 I tend to use vs code to edit, there is an adjusted one for Android but that has an issues with fonts, one can run 
 user land linux app and have it run on visual mode , the android device need to be equiped with a lot of ram. more that 12GB. If the traditional path of win/Lin/Mac then all is as normal.
